@@ -1,0 +1,17 @@
+[global]
+  sendAnonymousUsage = true
+
+[providers.docker]
+  exposedByDefault = false
+
+#[entryPoints]
+#  [entryPoints.web]
+#    address = ":80"
+#  [entryPoints.web-secure]
+#    address = ":443"
+
+#[tls.options]
+#  [tls.options.default]
+#    [tls.options.default.clientAuth]
+#      caFiles = ["/traefik/ca/RootCA.crt"]
+#      clientAuthType = "VerifyClientCertIfGiven"

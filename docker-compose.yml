@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  traefik:
+    build: .docker/traefik/dockerfile
+    command:
+      - --log.level=DEBUG
+      - --api=true
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=web
+      - --entrypoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --providers.file.directory=/traefik/config/
+    container_name: ${PROJECT_NAME}_traefik
+    init: true
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=docker-central-gateway
+      - traefik.http.routers.traefik.rule=Host(`traefik.${TRAEFIK_DOMAIN:?err}`)
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+    networks:
+      - docker-central-gateway
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .docker/traefik/:/traefik
+
+networks:
+  docker-central-gateway:
+    external: true
+
+##
+# Important commands
+#
+# 1. docker-compose up                                   ## Initiate the project
+# 2. docker-compose up --build                           ## Initiate the project and rebuild 'your' images (dockerfile)
+# 3. docker kill $(docker ps -q)                         ## Stop all Docker containers.
+# 4. docker rm $(docker ps -a -q)                        ## Remove all stopped containers.
+# 5. docker rmi $(docker images -q)                      ## Remove all unused images.
+# 6. docker container ls                                 ## List all containers.
+# 7. docker images                                       ## List all images.
+# 8. docker exec -it a1ca515065fc /bin/ash               ## Open the shell of container a1ca515065fc so you can manually edit the container.
+# 9. docker exec -it documentcreatie_php composer update ## Run composer update on the host, tip: change the container id.
+# 10. docker logs <container_name>                       ## Get the logs of a container
+
+##
+# Sources
+# Init: true - https://medium.com/factualopinions/docker-compose-tricks-and-best-practices-5e7e43eba8eb
