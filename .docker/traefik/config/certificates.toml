@@ -1,7 +1,7 @@
-[[tls.certificates]]
-   certFile = "/traefik/certificates/<domain-1-public-key>.crt"
-   keyFile  = "/traefik/certificates/<domain-1-private-key>.key"
-
-[[tls.certificates]]
-   certFile = "/traefik/certificates/<domain-2-public-key>.crt"
-   keyFile  = "/traefik/certificates/<domain-2-private-key>.key"
+#[[tls.certificates]]
+#   certFile = "/traefik/certificates/<domain-1-public-key>.crt"
+#   keyFile  = "/traefik/certificates/<domain-1-private-key>.key"
+#
+#[[tls.certificates]]
+#   certFile = "/traefik/certificates/<domain-2-public-key>.crt"
+#   keyFile  = "/traefik/certificates/<domain-2-private-key>.key"
