@@ -1,5 +1,20 @@
 version: '3.7'
 services:
+  mongodb:
+    build: .docker/mongodb/dockerfile
+    container_name: ${PROJECT_NAME}_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-rootpassword}
+    init: true
+    networks:
+      - docker-central-gateway
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+    volumes:
+      - .docker/mongodb/data:/data/db
+
   mysql:
     build: .docker/mysql/dockerfile
     command:
