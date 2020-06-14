@@ -1,5 +1,26 @@
 version: '3.7'
 services:
+  mailhog:
+    build: .docker/mailhog/dockerfile
+    command:
+      - -storage=maildir
+      - -maildir-path=/maildir
+    container_name: ${PROJECT_NAME}_mailhog
+    init: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mailhog.rule=Host(`mailhog.${TRAEFIK_DOMAIN:?err}`)
+      - traefik.http.routers.mailhog.entrypoints=web
+      - traefik.http.services.mailhog.loadbalancer.server.port=8025
+      - traefik.docker.network=docker-central-gateway
+    networks:
+      - docker-central-gateway
+    ports:
+      - 25:1025
+    restart: unless-stopped
+    volumes:
+      - .docker/mailhog/data:/maildir
+
   mongodb:
     build: .docker/mongodb/dockerfile
     container_name: ${PROJECT_NAME}_mongodb
